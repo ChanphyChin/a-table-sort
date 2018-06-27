@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script type="text/javascript" src="https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/jquery/jquery-1.10.2.min_65682a2.js"></script>
+</head>
+<style>
+  tr{
+    width: 400px;
+  }
+  td{
+    float: left;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #eee;
+  }
+</style>
+<body>
+  <table class="table"></table>
+</body>
+<script>
+  /* created by Chanphy on 2018-6-27 */
+  $(function(){
+    
+    var arr = ['单','单','单','双','单','双','双','单','单','单','单','双','单']
+    
+    function getTable (arr){
+      //默认第一个
+      var pre = '';
+      //定义当前数据
+      var current = '';
+      //定义储存计算好坐标的数组
+      var result = [];
+      //需要制作的表格宽度个数和高度个数
+      var tableCountH = 10;
+      var tableCountW = 20;
+      //定义起始位置的坐标（因为起始位置为0,0  但是我们定义了第一个数据为空，那么坐标应该从-1，-1开始）
+      var x = -1;
+      var y = -1;
+      //定义上一个位置的坐标
+      var preX;
+      var preY;
+      //算出每个值的坐标值
+      for(var i = 0; i < arr.length; i ++){
+        current = arr[i];
+        //判断当前数据是否与上一个相同，如果相同x不变，y+1，如果不同x+1，y不变。x轴为前一个值的x轴基础上加1
+        if(current == pre){
+          x = preX ? preX : 0;
+          y += 1;
+          preY = y;
+          //边界值判断
+          if(y > tableCountH){
+
+          }
+        }else{
+          //如果不同，那么置换上一个的值为当前不同的值,此时y粥坐标为0，y轴在前一个y轴的基础上加1
+          y = 0;
+          x += 1;
+          preX = x;
+          //边界值判断
+          if(x > tableCountW){
+
+          }
+        }
+        pre = current;
+        result[y*20 + x] = current;
+      }
+      return result;
+    }
+    //定义html字符串变量
+    var trHtml = '';
+    var tdHtml = '';
+    var tbodyHtml = '';
+    //根据上面的函数得到以下标为规则的数组
+    var tableArr = getTable(arr);
+    //循环生成一个tr为10排，每一排tr里面有20个td的表格
+    for(var i = 0; i < 10; i++){
+      for(var j = 0; j < 20; j ++){
+        //判断每一个规则是否能对应上数据里面的数据，如果没有，则为空
+        if(tableArr[i*20 + j]){
+          tdHtml += '<td>'+tableArr[i*20 + j]+'</td>'
+        }else{
+          tdHtml += '<td></td>'
+        }
+      }
+      trHtml += '<tr>'+tdHtml+'</tr>'
+      tdHtml = '';
+    }
+    tbodyHtml = '<tbody>'+trHtml+'</tbody>'
+    $('.table').append(tbodyHtml);
+  })
+</script>
+</html>
